@@ -1,0 +1,20 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: acxmatos-ga-tls
+spec:
+  secretName: acxmatos-ga
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: acxmatos.ga
+  dnsNames:
+    - acxmatos.ga
+    - www.acxmatos.ga
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - acxmatos.ga
+          - www.acxmatos.ga
