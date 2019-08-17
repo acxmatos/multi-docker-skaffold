@@ -1,0 +1,8 @@
+# Create secret to store postgree password
+kubectl create secret generic postgres-secret-pgpassword --from-literal PGPASSWORD=xxx
+
+# Enable ingress service on minikube
+minikube addons enable ingress
+
+# Run mandatory command to setup ingress-nginx on minikube
+kubectl apply -f "https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml"

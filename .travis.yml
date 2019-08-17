@@ -4,8 +4,18 @@ services:
   - docker
 
 before_install:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker build -t acxmatos/multi-docker-client-test -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run -e CI=true acxmatos/multi-docker-client-test npm run test
+
+after_success:
+  - docker build -t acxmatos/multi-docker-client ./client
+  - docker build -t acxmatos/multi-docker-server ./server
+  - docker build -t acxmatos/multi-docker-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to Docker Hub
+  - docker push acxmatos/multi-docker-client
+  - docker push acxmatos/multi-docker-server
+  - docker push acxmatos/multi-docker-worker
